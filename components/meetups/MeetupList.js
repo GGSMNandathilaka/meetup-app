@@ -3,7 +3,7 @@ import classes from "./MeetupList.module.css";
 
 function MeetupList(props) {
   return (
-    <div className="row row-cols-1 row-cols-md-3 g-4">
+    <div className="row row-cols-1 row-cols-md-1 g-4 m-5 padding-25">
       {props.meetups.map((meetup) => (
         <MeetupItem
           key={meetup.id}

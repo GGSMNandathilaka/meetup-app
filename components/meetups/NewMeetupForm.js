@@ -25,7 +25,7 @@ function NewMeetupForm(props) {
   }
 
   return (
-    <form className="needs-validation" noValidate onSubmit={submitHandler}>
+    <form className="needs-validation m-5" noValidate onSubmit={submitHandler}>
       <div className="row g-3">
         <div className="col-6">
           <div className="col-12">
@@ -88,7 +88,7 @@ function NewMeetupForm(props) {
               ref={descriptionInputRef}
             ></textarea>
           </div>
-          <button className="btn btn-primary btn-lg m-2" type="submit">
+          <button className="btn btn-primary btn-lg m-5" type="submit">
             Add Meetup
           </button>
         </div>

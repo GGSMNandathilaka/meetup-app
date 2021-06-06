@@ -21,6 +21,7 @@ function MeetupDetails(props) {
 }
 
 export async function getStaticPaths() {
+  // env variables uses to create a connection string
   const connectionString = `mongodb+srv://${process.env.mongodb_username}:${process.env.mongodb_password}@${process.env.mongodb_clustername}.movlm.mongodb.net/${process.env.mongodb_database}?retryWrites=true&w=majority`;
 
   const client = await MongoClient.connect(connectionString);
@@ -33,7 +34,7 @@ export async function getStaticPaths() {
   client.close();
 
   return {
-    fallback: "blocking",
+    fallback: false,
     paths: meetups.map((meetup) => ({
       params: { meetupId: meetup._id.toString() },
     })),
@@ -42,10 +43,8 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context) {
   const meetupId = context.params.meetupId;
-
-  const client = await MongoClient.connect(
-    "mongodb+srv://admin:qBKva0dC5b5qyUEP@cluster0.movlm.mongodb.net/meetups?retryWrites=true&w=majority"
-  );
+  const connectionString = `mongodb+srv://${process.env.mongodb_username}:${process.env.mongodb_password}@${process.env.mongodb_clustername}.movlm.mongodb.net/${process.env.mongodb_database}?retryWrites=true&w=majority`;
+  const client = await MongoClient.connect(connectionString);
   const db = client.db();
 
   const meetupsCollection = db.collection("meetups");

@@ -2,7 +2,7 @@ module.exports = {
   env: {
     mongodb_username: "admin",
     mongodb_password: "test",
-    mongodb_clustername: "cluster0",
+    mongodb_clustername: "meetups",
     mongodb_database: "meetups",
   },
 };
@@ -13,9 +13,9 @@ module.exports = (phase) => {
   if (phase === PHASE_DEVELOPMENT_SERVER) {
     return {
       env: {
-        mongodb_username: "admin",
+        mongodb_username: "develop",
         mongodb_password: "test",
-        mongodb_clustername: "cluster0",
+        mongodb_clustername: "meetups",
         mongodb_database: "meetups",
       },
     };
@@ -23,9 +23,9 @@ module.exports = (phase) => {
 
   return {
     env: {
-      mongodb_username: "admin",
-      mongodb_password: "qBKva0dC5b5qyUEP",
-      mongodb_clustername: "cluster0",
+      mongodb_username: "develop",
+      mongodb_password: "MhjW4h5qByFeRW57",
+      mongodb_clustername: "meetups",
       mongodb_database: "meetups",
     },
   };

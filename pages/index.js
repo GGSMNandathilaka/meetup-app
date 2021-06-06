@@ -1,35 +1,33 @@
-import Layout from "../components/layout/Layout";
+import { useEffect, useState } from "react";
 import MeetupList from "../components/meetups/MeetupList";
+import { getMeetups } from "../components/services/fakeMeetupsService";
 
-const DUMMY_MEETUPS = [
-  {
-    id: "m1",
-    title: "A First Meetup",
-    image:
-      "https://images.unsplash.com/photo-1493397212122-2b85dda8106b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=751&q=80",
-    address: "No. 471, New York, USA",
-    description: "A First Meetup",
-  },
-  {
-    id: "m2",
-    title: "A Second Meetup",
-    image:
-      "https://images.unsplash.com/photo-1451976426598-a7593bd6d0b2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80",
-    address: "No. 472, New York, USA",
-    description: "A Second Meetup",
-  },
-  {
-    id: "m3",
-    title: "A Third Meetup",
-    image:
-      "https://images.unsplash.com/photo-1536154010-6ab8a1d741d2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=675&q=80",
-    address: "No. 473, New York, USA",
-    description: "A Third Meetup",
-  },
-];
+const DUMMY_MEETUPS = getMeetups();
 
-function HomePage() {
-  return <MeetupList meetups={DUMMY_MEETUPS}></MeetupList>;
+function HomePage(props) {
+  return <MeetupList meetups={props.meetups}></MeetupList>;
 }
+
+export async function getServerSideProps(context) {
+  const req = context.req;
+  const res = context.res;
+  // fetch data from an API
+  return {
+    props: {
+      meetups: DUMMY_MEETUPS,
+    },
+  };
+}
+
+// export async function getStaticProps() {
+//   // never execute in the client-side
+//   // fetch data from an API
+//   return {
+//     props: {
+//       meetups: DUMMY_MEETUPS,
+//     },
+//     revalidate: 10,
+//   };
+// }
 
 export default HomePage;

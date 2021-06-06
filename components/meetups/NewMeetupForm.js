@@ -88,7 +88,7 @@ function NewMeetupForm(props) {
               ref={descriptionInputRef}
             ></textarea>
           </div>
-          <button className="btn btn-primary btn-lg m-5" type="submit">
+          <button className="btn btn-primary btn-sm m-2" type="submit">
             Add Meetup
           </button>
         </div>

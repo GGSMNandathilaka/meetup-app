@@ -1,48 +1,68 @@
-import { useRouter } from "next/router";
+import { Fragment } from "react";
+import Head from "next/head";
+import { MongoClient, ObjectId } from "mongodb";
 import MeetupDetail from "../components/meetups/MeetupDetail";
-import { getMeetupById } from "../components/services/fakeMeetupsService";
 
-function MeetupDetails() {
-  const meetup = getMeetupById("m1")[0];
-
-  return <MeetupDetail meetup={meetup} />;
+function MeetupDetails(props) {
+  return (
+    <Fragment>
+      <Head>
+        <title>{props.meetupData.title}</title>
+        <meta name="description" content={props.meetupData.title}></meta>
+      </Head>
+      <MeetupDetail
+        id={props.meetupData.id}
+        image={props.meetupData.image}
+        title={props.meetupData.title}
+        address={props.meetupData.address}
+      />
+    </Fragment>
+  );
 }
 
 export async function getStaticPaths() {
+  const client = await MongoClient.connect(
+    "mongodb+srv://admin:qBKva0dC5b5qyUEP@cluster0.movlm.mongodb.net/meetups?retryWrites=true&w=majority"
+  );
+  const db = client.db();
+
+  const meetupsCollection = db.collection("meetups");
+
+  const meetups = await meetupsCollection.find({}, { _id: 1 }).toArray();
+
+  client.close();
+
   return {
-    fallback: true, // define all paths
-    paths: [
-      {
-        params: {
-          meetupId: "m1",
-        },
-      },
-      {
-        params: {
-          meetupId: "m2",
-        },
-      },
-      {
-        params: {
-          meetupId: "m3",
-        },
-      },
-    ],
+    fallback: false,
+    paths: meetups.map((meetup) => ({
+      params: { meetupId: meetup._id.toString() },
+    })),
   };
 }
 
 export async function getStaticProps(context) {
   const meetupId = context.params.meetupId;
-  console.log(meetupId);
+
+  const client = await MongoClient.connect(
+    "mongodb+srv://admin:qBKva0dC5b5qyUEP@cluster0.movlm.mongodb.net/meetups?retryWrites=true&w=majority"
+  );
+  const db = client.db();
+
+  const meetupsCollection = db.collection("meetups");
+
+  const selectedMeetup = await meetupsCollection.findOne({
+    _id: ObjectId(meetupId),
+  });
+
+  client.close();
+
   return {
     props: {
       meetupData: {
-        id: meetupId,
-        title: "A First Meetup",
-        image:
-          "https://images.unsplash.com/photo-1493397212122-2b85dda8106b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=751&q=80",
-        address: "No. 471, New York, USA",
-        description: "A First Meetup",
+        id: selectedMeetup._id.toString(),
+        title: selectedMeetup.title,
+        address: selectedMeetup.address,
+        image: selectedMeetup.image,
       },
     },
   };

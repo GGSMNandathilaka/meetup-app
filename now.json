@@ -1,0 +1,10 @@
+{
+  "name": "meetup-app",
+  "version": 1.0,
+  "build": {
+    "env": {
+      "MONGODB_URI": "mongodb+srv://admin:qBKva0dC5b5qyUEP@cluster0.movlm.mongodb.net/meetups?retryWrites=true&w=majority",
+      "DB_NAME": "meetups"
+    }
+  }
+}

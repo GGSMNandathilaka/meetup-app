@@ -30,9 +30,10 @@ function HomePage(props) {
 // }
 
 export async function getStaticProps() {
-  const client = await MongoClient.connect(
-    "mongodb+srv://admin:qBKva0dC5b5qyUEP@cluster0.movlm.mongodb.net/meetups?retryWrites=true&w=majority"
-  );
+  console.log(process.env.mongodb_username);
+  const connectionString = `mongodb+srv://${process.env.mongodb_username}:${process.env.mongodb_password}@${process.env.mongodb_clustername}.movlm.mongodb.net/${process.env.mongodb_database}?retryWrites=true&w=majority`;
+
+  const client = await MongoClient.connect(connectionString);
   const db = client.db();
 
   const meetupsCollection = db.collection("meetups");
